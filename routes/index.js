@@ -18,13 +18,13 @@ router.post('/', async function (req, res, next) {
   console.log(userModel);
 
   await userModel.save();
-  res.send(200);
+  res.sendStatus(200);
 });
 
 // GET request to view all user details
 router.get('/view',async (req,res)=>{
   var res = await User.find({},(err,doc)=>{
-    res.send(doc);
+    res.sendStatus(doc);
 
   });
 });
@@ -33,9 +33,9 @@ router.get('/view',async (req,res)=>{
 router.delete('/delete/:id', async (req, res) => {
   await User.findOneAndRemove({ _id: req.params.id }, (err, doc) => {
     if (err)
-      res.send(500);
+      res.sendStatus(500);
     else
-      res.send(200);
+      res.sendStatus(200);
 
   });
 });
@@ -44,9 +44,9 @@ router.delete('/delete/:id', async (req, res) => {
 router.get('/find/:interest', async (req, res) => {
   await User.find({ interests: { $in: req.params.interest } }, (err, doc) => {
     if (err)
-      res.send(500);
+      res.sendStatus(500);
     else
-      res.send(doc);
+      res.sendStatus(doc);
   });
 });
 
@@ -58,10 +58,10 @@ router.post('/comment', async (req, res) => {
   comment.message = req.body.message;
   await comment.save(async (err, doc) => {
     if (err)
-      res.send(503);
+      res.sendStatus(503);
     else {
       await User.findOneAndUpdate({ _id: req.body.from }, { $push: { commentid: doc._id } });
-      res.send(200);
+      res.sendStatus(200);
     }
   })
 });
@@ -70,7 +70,7 @@ router.post('/comment', async (req, res) => {
 // GET request to get all comments by an user
 router.get('/getcomments', async (req, res) => {
   var comments = await Comment.find({ from: req.body.id });
-  res.send(comments);
+  res.sendStatus(comments);
 });
 
 
